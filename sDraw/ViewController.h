@@ -8,10 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "HSVColorPicker.h"
-#import <HSVColorPicker/HSVColorPicker.h>
-#import "UIColor+HexCodes.h"
 
-@interface ViewController : UIViewController
+@interface ViewController : UIViewController <HSVColorPickerDelegate>
 {
     CGPoint lastPoint;
     CGFloat hue;
@@ -20,6 +18,9 @@
     CGFloat brush;
     CGFloat opacity;
     BOOL mouseSwiped;
+    
+    UIColor *selectedColor;
+    HSVColorPicker *colorPicker;
     
     UIView *brushView;
     UIImage *previousImage;
@@ -32,18 +33,18 @@
 @property (strong, nonatomic) IBOutlet UIView *colorView;
 @property (strong, nonatomic) IBOutlet UIView *canvasView;
 
-@property (strong, nonatomic) IBOutlet UISlider *hueSlider;
-@property (weak, nonatomic) HSVColorPicker *colorPicker;
-@property (weak, nonatomic) UITextField *colorTextField;
+//@property (strong, nonatomic) IBOutlet UISlider *hueSlider;
+@property (strong, nonatomic) IBOutlet UIView *colorPickerView;
+
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *undoButton;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *saveButton;
 
-- (IBAction)hueSliderChanged:(id)sender;
-- (IBAction)saturationSliderChanged:(id)sender;
-- (IBAction)brightnessSliderChanged:(id)sender;
+//- (IBAction)hueSliderChanged:(id)sender;
+//- (IBAction)saturationSliderChanged:(id)sender;
+//- (IBAction)brightnessSliderChanged:(id)sender;
 - (IBAction)opacitySliderChanged:(UISlider *)sender;
 
-- (IBAction)palletSelected:(id)sender;
+//- (IBAction)palletSelected:(id)sender;
 - (IBAction)brushSizeChanged:(UIStepper *)sender;
 - (IBAction)save:(id)sender;
 

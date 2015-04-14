@@ -23,46 +23,19 @@
 {
     [super viewDidLoad];
     
+    brush = 10.0;
+    opacity = 1.0;
     /*hue = .5;
     saturation = .5;
-    brightness = .5;
-    brush = 10.0;
-    opacity = 1.0;*/
-    
-    // add the color picker and set ourselves as the delegate
-    //HSVColorPicker * colorPicker = [[HSVColorPicker alloc] initWithFrame:self.view.frame];
-    HSVColorPicker * colorPicker = [[HSVColorPicker alloc] initWithFrame:CGRectMake(self.view.frame.origin.x + 200, self.view.frame.origin.y - 30, self.view.frame.size.width, self.view.frame.size.height)];
+    brightness = .5;*/
 
-    colorPicker.delegate = self;
-    colorPicker.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addSubview:colorPicker];
-    self.colorPicker = colorPicker;
-    // add the text field
-    UITextField * colorTextField = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 20)];
-    colorTextField.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addSubview:colorTextField];
-    self.colorTextField = colorTextField;
-    // set our auto layout constraints
-    NSDictionary * views = NSDictionaryOfVariableBindings(colorPicker, colorTextField);
-    NSDictionary * metrics = @{ @"colorPickerDimension" : @100.0, @"padding" : @44.0 };
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(==padding)-[colorTextField]-[colorPicker(colorPickerDimension)]->=0-|" options:NSLayoutFormatAlignAllCenterX metrics:metrics views:views]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-10-[colorPicker(colorPickerDimension)]-10-|" options:0 metrics:metrics views:views]];
-    
-    [self.colorView setBackgroundColor:[UIColor whiteColor]];
-    [self updateColorView:self.colorPicker.color];
-    
-    //NSLog(@"%@", self.image);
-    //NSLog(@"%@", self.tempDrawImage);
-    //NSLog(@"%@", self.canvasView);
-    //[self.image setBackgroundColor:[UIColor redColor]];
-    //[self.tempDrawImage setBackgroundColor:[UIColor blueColor]];
     [self.undoButton setEnabled:NO];
     [self.saveButton setEnabled:NO];
 }
 
 - (void)colorPicker:(HSVColorPicker *)colorPicker changedColor:(UIColor *)color {
-    // update your UI with color
-    [self updateColorView:self.colorPicker.color];
+    selectedColor = color;
+    [self updateColorView];
 }
 
 - (void)viewDidLayoutSubviews {
@@ -77,6 +50,19 @@
     self.colorView.layer.shadowColor = [[UIColor blackColor] CGColor];
     self.colorView.layer.shadowRadius = 5.0;
     self.colorView.layer.shadowOpacity = .25;
+    [self.colorView setBackgroundColor:[UIColor whiteColor]];
+
+    [self.colorPickerView setBackgroundColor:[UIColor clearColor]];
+    if (!colorPicker) {
+       colorPicker = [[HSVColorPicker alloc] initWithFrame:self.colorPickerView.frame];
+       
+       colorPicker.delegate = self;
+       selectedColor = [UIColor redColor];//default
+       [colorPicker setColor:selectedColor];
+       [self colorPicker:colorPicker changedColor:selectedColor];
+       
+       [self.view addSubview:colorPicker];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -84,40 +70,25 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*- (void) updateColorView {
+- (void) updateColorView {
     if (brushView) {
         [brushView removeFromSuperview];
     }
     brushView = [[UIView alloc] initWithFrame:CGRectMake(0,0, brush, brush)];
     brushView.layer.cornerRadius = brush/2;
-    [brushView setBackgroundColor:[self currentColor]];
+    [brushView setBackgroundColor:selectedColor];
     [brushView setCenter:CGPointMake(self.colorView.frame.size.width/2, self.colorView.frame.size.height/2)];
     [brushView setAlpha:opacity];
     
-    [self.colorView addSubview:brushView];
-}
-*/
-- (void) updateColorView: (UIColor *) color{
-    if (brushView) {
-        [brushView removeFromSuperview];
-    }
-    brushView = [[UIView alloc] initWithFrame:CGRectMake(0,0, brush, brush)];
-    brushView.layer.cornerRadius = brush/2;
-    self.colorTextField.text = [color formatHexCode];
-    //printf("%s\n", self.colorTextField.text);
-    [brushView setBackgroundColor:self.colorPicker.color];
-    [brushView setCenter:CGPointMake(self.colorView.frame.size.width/2, self.colorView.frame.size.height/2)];
-    [brushView setAlpha:opacity];
-    
+    //NSLog(@"%@", brushView);
     [self.colorView addSubview:brushView];
 }
 
-
-- (UIColor *)currentColor {
-    //return [UIColor colorWithHue:hue saturation:saturation brightness:brightness alpha:opacity];
-    return self.colorPicker.color;
+- (IBAction)opacitySliderChanged:(UISlider *)sender {
+    opacity = [sender value];
+    [self updateColorView];
 }
-
+/*
 - (IBAction)hueSliderChanged:(UISlider *)sender {
     hue = [sender value];
     //[self.redLabel setTextColor:[UIColor colorWithRed:red green:0 blue:0 alpha:1.0]];
@@ -133,11 +104,6 @@
 - (IBAction)brightnessSliderChanged:(UISlider *)sender {
     brightness = [sender value];
     //[self.blueLabel setTextColor:[UIColor colorWithRed:0 green:0 blue:blue alpha:1.0]];
-    //[self updateColorView];
-}
-
-- (IBAction)opacitySliderChanged:(UISlider *)sender {
-    opacity = [sender value];
     //[self updateColorView];
 }
 
@@ -172,7 +138,7 @@
     [self.hueSlider setValue:hue animated:YES];
     //[self updateColorView];
 }
-
+*/
 - (IBAction)brushSizeChanged:(UIStepper *)sender {
     brush = sender.value;
     //[self updateColorView];
@@ -250,11 +216,16 @@
 }
 
 - (void)pixelizeIfNeeded {
-    if (pixelized && self.actualImageView.image) {
-        UIImage *pixelatedImage = [self pixelatedImage:self.actualImageView.image];
-        [self.pixelizedImageView setImage:pixelatedImage];
-        [self.pixelizedImageView setBackgroundColor:[UIColor whiteColor]];
-        [self.pixelizedImageView setHidden:NO];
+    if (pixelized) {
+        if (self.actualImageView.image) {
+            UIImage *pixelatedImage = [self pixelatedImage:self.actualImageView.image];
+            [self.pixelizedImageView setImage:pixelatedImage];
+            [self.pixelizedImageView setBackgroundColor:[UIColor whiteColor]];
+            [self.pixelizedImageView setHidden:NO];
+        }
+        else {
+            [self.pixelizedImageView setImage:nil];
+        }
     }
 }
 
@@ -279,8 +250,10 @@
 
 - (IBAction)undo:(id)sender {
     self.actualImageView.image = previousImage;
+    [self pixelizeIfNeeded];
+    
     [self.undoButton setEnabled:NO];
-    [self.saveButton setEnabled:NO];
+    [self.saveButton setEnabled:(self.actualImageView.image != nil)];
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
@@ -302,7 +275,7 @@
     CGContextAddLineToPoint(UIGraphicsGetCurrentContext(), currentPoint.x, currentPoint.y);
     CGContextSetLineCap(UIGraphicsGetCurrentContext(), kCGLineCapRound);
     CGContextSetLineWidth(UIGraphicsGetCurrentContext(), brush );
-    CGContextSetStrokeColorWithColor(UIGraphicsGetCurrentContext(), [self currentColor].CGColor);
+    CGContextSetStrokeColorWithColor(UIGraphicsGetCurrentContext(), selectedColor.CGColor);
     CGContextSetBlendMode(UIGraphicsGetCurrentContext(),kCGBlendModeNormal);
     
     CGContextStrokePath(UIGraphicsGetCurrentContext());
@@ -321,7 +294,7 @@
         [self.tempDrawImage.image drawInRect:CGRectMake(0, 0, self.tempDrawImage.frame.size.width, self.view.frame.size.height)];
         CGContextSetLineCap(UIGraphicsGetCurrentContext(), kCGLineCapRound);
         CGContextSetLineWidth(UIGraphicsGetCurrentContext(), brush);
-        CGContextSetStrokeColorWithColor(UIGraphicsGetCurrentContext(), [self currentColor].CGColor);
+        CGContextSetStrokeColorWithColor(UIGraphicsGetCurrentContext(), selectedColor.CGColor);
         CGContextMoveToPoint(UIGraphicsGetCurrentContext(), lastPoint.x, lastPoint.y);
         CGContextAddLineToPoint(UIGraphicsGetCurrentContext(), lastPoint.x, lastPoint.y);
         CGContextStrokePath(UIGraphicsGetCurrentContext());

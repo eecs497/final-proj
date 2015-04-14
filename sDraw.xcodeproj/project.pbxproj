@@ -21,7 +21,6 @@
 		90A24DF41ADAC74C007FCC9B /* Keyboard.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 90A24DEB1ADAC74B007FCC9B /* Keyboard.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		90A24DFC1ADACB68007FCC9B /* Keyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 90A24DFB1ADACB68007FCC9B /* Keyboard.storyboard */; };
 		C349F7497AC0BDC119E9E6E9 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EE22ED54724CF55FD88847C6 /* libPods.a */; };
-		C8A515631ADD85D400877799 /* UIColor+HexCodes.m in Sources */ = {isa = PBXBuildFile; fileRef = C8A515621ADD85D400877799 /* UIColor+HexCodes.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,8 +70,6 @@
 		90A24DFB1ADACB68007FCC9B /* Keyboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Keyboard.storyboard; sourceTree = "<group>"; };
 		90FA951F1ADADA7B00E3EB78 /* sDraw.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = sDraw.entitlements; sourceTree = "<group>"; };
 		90FA95201ADADA9500E3EB78 /* Keyboard.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Keyboard.entitlements; sourceTree = "<group>"; };
-		C8A515621ADD85D400877799 /* UIColor+HexCodes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+HexCodes.m"; sourceTree = "<group>"; };
-		C8A515641ADD85E400877799 /* UIColor+HexCodes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIColor+HexCodes.h"; sourceTree = "<group>"; };
 		EE22ED54724CF55FD88847C6 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -121,8 +118,6 @@
 				901E19251ABB676D0050984F /* main.m */,
 				901E19261ABB676D0050984F /* ViewController.h */,
 				901E19271ABB676D0050984F /* ViewController.m */,
-				C8A515621ADD85D400877799 /* UIColor+HexCodes.m */,
-				C8A515641ADD85E400877799 /* UIColor+HexCodes.h */,
 			);
 			path = sDraw;
 			sourceTree = "<group>";
@@ -371,7 +366,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				901E192E1ABB676D0050984F /* ViewController.m in Sources */,
-				C8A515631ADD85D400877799 /* UIColor+HexCodes.m in Sources */,
 				901E192D1ABB676D0050984F /* main.m in Sources */,
 				901E19281ABB676D0050984F /* AppDelegate.m in Sources */,
 			);
