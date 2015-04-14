@@ -1,0 +1,13 @@
+PODS:
+  - GPUImage (0.1.6)
+  - HSVColorPicker (0.1.1)
+
+DEPENDENCIES:
+  - GPUImage
+  - HSVColorPicker
+
+SPEC CHECKSUMS:
+  GPUImage: 4675ce4a5370ca92fcea8623b2a08b8f0c51b940
+  HSVColorPicker: a73628f59ea2c29f5ca2d8d12c27bd5b5ffc70c8
+
+COCOAPODS: 0.36.3
