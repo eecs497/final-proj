@@ -141,7 +141,7 @@
 */
 - (IBAction)brushSizeChanged:(UIStepper *)sender {
     brush = sender.value;
-    //[self updateColorView];
+    [self updateColorView];
 }
 
 - (IBAction)save:(id)sender {
